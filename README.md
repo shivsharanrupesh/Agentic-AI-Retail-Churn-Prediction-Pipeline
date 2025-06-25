@@ -12,7 +12,7 @@ This project implements an **Agentic AI pipeline** for retail churn prediction u
 Predicting which customers are likely to churn, understanding their profiles, and proactively engaging them with personalized retention strategies is critical. Traditional approaches are manual, slow, and fail to deliver targeted action.
 
 ---
-![Workflow Diagram](./workflow_diagram.png)
+![Workflow Diagram](./workflow Diagram.png)
 
 ## What This Project Does
 
