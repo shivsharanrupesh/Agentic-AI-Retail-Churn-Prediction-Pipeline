@@ -1,32 +1,39 @@
 from crewai import Agent
-import random
 
 class FeedbackLoopAgent(Agent):
     """
-    CrewAI Agent for simulating engagement feedback and learning.
+    CrewAI Agent for collecting feedback on engagement and refining customer profiles.
     """
+
     def __init__(self, llm):
         super().__init__(
             name="Feedback Loop Agent",
-            description="Monitors engagement response and signals continuous learning.",
-            goal="Make every outreach cycle smarter for the next one.",
+            description="Collects engagement feedback and updates customer profiles accordingly.",
+            goal="Improve future campaigns by learning from feedback.",
             role="The operations optimizer and feedback analyst.",
-            backstory="You connect campaign performance to real business impact.",
+            backstory="Connects campaign performance to business impact.",
             verbose=True,
-            allow_delegation=False,
-            llm=llm
+            llm=llm,
+            allow_delegation=True,
         )
 
-    def run(self, customer_profiles, **kwargs):
+    def run(self, engaged_profiles, **kwargs):
         """
-        Simulate and assign feedback (response) to each customer.
+        Simulate or accept feedback and update customer profiles.
 
         Args:
-            customer_profiles (list): Profiles with engagement info.
+            engaged_profiles (list): Customer profiles after engagement step.
 
         Returns:
-            list: Profiles with response feedback.
+            list: Profiles updated with feedback insights.
         """
-        for p in customer_profiles:
-            p['responded'] = bool(random.getrandbits(1))
-        return customer_profiles
+        for p in engaged_profiles:
+            # Simulated feedback; replace with actual input as needed
+            if p.get("churn_risk") == "high":
+                p["feedback"] = "neutral"
+            else:
+                p["feedback"] = "positive"
+
+            # Optionally adjust churn risk or retention predictions here based on feedback
+
+        return engaged_profiles
