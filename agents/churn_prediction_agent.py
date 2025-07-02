@@ -1,12 +1,5 @@
 from crewai import Agent
-from sklearn.ensemble import RandomForestClassifier
-import numpy as np
-
-# Global ML model
-X = np.random.rand(100, 4)
-y = np.random.randint(0, 2, 100)
-clf = RandomForestClassifier()
-clf.fit(X, y)
+from ML_model import clf, feature_names  # Import model and feature names dynamically
 
 class ChurnPredictionAgent(Agent):
     """
@@ -42,7 +35,8 @@ class ChurnPredictionAgent(Agent):
 
     def _extract_features(self, profile):
         """
-        Convert a customer profile dict to a feature vector.
+        Convert a customer profile dict to a feature vector dynamically
+        based on the feature_names list from ML_model.py.
 
         Args:
             profile (dict): Customer profile.
@@ -50,9 +44,4 @@ class ChurnPredictionAgent(Agent):
         Returns:
             list: Feature vector for ML model.
         """
-        return [
-            profile.get('visit_freq', 0),
-            profile.get('avg_basket', 0),
-            profile.get('last_coupon_days', 99),
-            profile.get('reward_points', 0),
-        ]
+        return [profile.get(feat, 0) for feat in feature_names]
