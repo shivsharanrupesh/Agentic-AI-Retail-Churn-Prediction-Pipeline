@@ -2,27 +2,32 @@ from crewai import Agent
 import pandas as pd
 
 class DataAggregationAgent(Agent):
-    file_path: str  # Declare as Pydantic field
+    """
+    CrewAI Agent to aggregate and clean customer data from CSV.
+    """
 
-    def __init__(self, file_path, llm):
+    def __init__(self, llm):
         super().__init__(
             name="Data Aggregation Agent",
-            description="Orchestrates and cleans customer data.",
-            goal="Provide structured customer data for downstream agents.",
+            description="Aggregates customer data from source files.",
+            goal="Produce a clean customer profile list.",
             role="Data orchestrator",
-            backstory="Expert at collecting and normalizing retail customer data.",
+            backstory="Expert in data ingestion and normalization.",
             verbose=True,
             llm=llm,
-            allow_delegation=True,
-            file_path=file_path  # <-- Pass as argument!
+            allow_delegation=False
         )
-        # No need to set self.file_path manually
 
-    def run(self, *args, **kwargs):
-        print(f"[DataAggregationAgent] Loading customer data from: {self.file_path}")
-        df = pd.read_csv(self.file_path)
-        df.dropna(how='all', inplace=True)
-        df.fillna('', inplace=True)
-        df.columns = [col.strip().lower().replace(' ', '_') for col in df.columns]
-        print(f"[DataAggregationAgent] Loaded {len(df)} customer records.")
-        return df
+    def run(self, file_path, **kwargs):
+        """
+        Read CSV file and return list of customer profiles.
+
+        Args:
+            file_path (str): Path to input CSV file.
+
+        Returns:
+            list: List of dicts with customer data.
+        """
+        df = pd.read_csv(file_path)
+        df = df.fillna(0)  # Basic cleaning, extend as needed
+        return df.to_dict(orient='records')
