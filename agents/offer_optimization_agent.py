@@ -1,45 +1,50 @@
-# agents/offer_optimization_agent.py
-
 from crewai import Agent
 
 class OfferOptimizationAgent(Agent):
     """
-    CrewAI Agent for optimizing retention offers based on persona mapping.
+    CrewAI Agent for optimizing retention offers based on churn risk and personas.
     """
-    offer_map: dict  # Pydantic field
 
-    def __init__(self, offer_map, llm):
-        """
-        Args:
-            offer_map (dict): Mapping of persona types to offers.
-            llm (str): The name of the LLM model to use.
-        """
+    def __init__(self, llm):
         super().__init__(
             name="Offer Optimization Agent",
-            description="Recommends optimal retention offers per customer persona.",
-            goal="Increase retention with targeted, data-driven offers.",
+            description="Selects the best retention offer for each customer persona or risk segment.",
+            goal="Increase customer retention with tailored offers.",
             role="Offer engine",
-            backstory="Marketing optimizer with a deep understanding of customer motivation.",
+            backstory="Marketing optimizer with deep understanding of customer motivation.",
             verbose=True,
             llm=llm,
             allow_delegation=True,
-            offer_map=offer_map  # Set as Pydantic field!
         )
 
-    def run(self, customer_df):
+    def run(self, customer_profiles, **kwargs):
         """
-        Assigns retention offers to customers based on their persona.
+        Assign best offers dynamically based on churn risk or persona labels.
 
         Args:
-            customer_df (pd.DataFrame): The DataFrame with a 'persona' column.
+            customer_profiles (list): List of customer dictionaries with churn risk and persona.
 
         Returns:
-            pd.DataFrame: DataFrame with new 'offer' column assigned.
+            list: Customer profiles annotated with an 'offer' field.
         """
-        print(f"[OfferOptimizationAgent] Assigning offers based on persona mapping.")
-        if 'persona' not in customer_df.columns:
-            raise ValueError("No 'persona' column found in input data.")
+        offer_map = {
+            "high": "Exclusive Discount",
+            "medium": "Special Bundle",
+            "low": "Loyalty Rewards"
+        }
 
-        customer_df['offer'] = customer_df['persona'].map(self.offer_map).fillna("DEFAULT_OFFER")
-        print(f"[OfferOptimizationAgent] Offers assigned.")
-        return customer_df
+        for p in customer_profiles:
+            churn_score = p.get('churn_score', 0)
+            # Categorize churn risk
+            if churn_score >= 0.7:
+                risk = "high"
+            elif churn_score >= 0.4:
+                risk = "medium"
+            else:
+                risk = "low"
+            p['churn_risk'] = risk
+
+            # Pick offer based on churn risk; optionally extend using persona
+            p["offer"] = offer_map.get(risk, "Standard Offer")
+
+        return customer_profiles
