@@ -1,3 +1,5 @@
+# agents/persona_builder_agent.py
+
 from crewai import Agent
 from sklearn.cluster import KMeans
 import pandas as pd
@@ -6,12 +8,17 @@ class PersonaBuilderAgent(Agent):
     """
     CrewAI Agent for clustering customers into personas using KMeans.
     
-    This agent segments customers into actionable personas based on
-    features like churn risk, demographics, purchase behavior, etc.
+    This agent segments customers into actionable personas based on 
+    demographic, behavioral, and churn risk data.
     """
     n_clusters: int  # Pydantic field for number of clusters
 
-    def __init__(self, llm, n_clusters=4):
+    def __init__(self, llm, n_clusters):
+        """
+        Args:
+            llm (str): The name of the LLM model to use (e.g., 'gpt-3.5-turbo').
+            n_clusters (int): Number of clusters/personas to generate.
+        """
         super().__init__(
             name="Persona Builder Agent",
             description="Clusters customers for segmentation.",
@@ -21,43 +28,32 @@ class PersonaBuilderAgent(Agent):
             verbose=True,
             llm=llm,
             allow_delegation=True,
-            n_clusters=n_clusters
+            n_clusters=n_clusters   # Set as Pydantic field
         )
 
-    def run(self, customer_profiles):
+    def run(self, customer_df: pd.DataFrame):
         """
-        Runs KMeans clustering on customer profiles to assign personas.
-
+        Cluster customers using KMeans and assign persona labels.
+        
         Args:
-            customer_profiles (list of dict): Customer data with features.
-
+            customer_df (pd.DataFrame): The DataFrame of customer data.
+        
         Returns:
-            list of dict: Customer data with added 'persona' field.
+            pd.DataFrame: Input DataFrame with added 'persona' column.
         """
-        import numpy as np
+        print(f"[PersonaBuilderAgent] Clustering {len(customer_df)} customers into {self.n_clusters} personas.")
 
-        # Convert list of dict to DataFrame for clustering
-        df = pd.DataFrame(customer_profiles)
-
-        # Select features dynamically: churn_score, visit_freq, avg_basket, reward_points etc.
-        # Use only numeric columns and drop missing
-        feature_cols = []
-        for col in ['churn_score', 'visit_freq', 'avg_basket', 'reward_points']:
-            if col in df.columns:
-                feature_cols.append(col)
-
+        # Select numeric columns dynamically (customize this list as needed)
+        feature_cols = [col for col in ['age', 'annual_spend', 'visit_count', 'churn_score'] if col in customer_df.columns]
         if not feature_cols:
-            raise ValueError("No valid features found for clustering.")
+            raise ValueError("No valid clustering features found in the data.")
 
-        X = df[feature_cols].apply(pd.to_numeric, errors='coerce').fillna(0)
+        X = customer_df[feature_cols].copy()
+        # Handle missing/non-numeric gracefully
+        X = X.apply(pd.to_numeric, errors='coerce').fillna(0)
 
         kmeans = KMeans(n_clusters=self.n_clusters, n_init=10, random_state=42)
-        df['persona'] = kmeans.fit_predict(X)
+        customer_df['persona'] = kmeans.fit_predict(X)
 
-        # Map numeric personas to string labels optionally
-        persona_labels = {i: f"Persona_{i+1}" for i in range(self.n_clusters)}
-        df['persona_label'] = df['persona'].map(persona_labels)
-
-        # Convert back to list of dict
-        enriched_profiles = df.to_dict(orient='records')
-        return enriched_profiles
+        print(f"[PersonaBuilderAgent] Assigned personas to customers.")
+        return customer_df
