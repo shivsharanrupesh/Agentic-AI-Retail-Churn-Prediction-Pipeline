@@ -152,6 +152,112 @@ churn risk factors for each segment
 
 Campaign performance metrics and optimization suggestions
 
+# AI-Powered Customer Churn Prediction & Retention Pipeline
+
+## Overview
+This project is an AI-powered, modular pipeline designed to help retail clients predict customer churn, segment customers into actionable personas, optimize retention offers, engage customers, and use feedback for continuous improvement.
+
+The architecture leverages **Agentic AI** concepts: multiple specialized agents perform focused tasks and collaborate asynchronously within a defined workflow.
+
+## High-Level Workflow
+1. **Data Aggregation** - Collect and unify customer data from multiple sources.
+2. **Churn Prediction** - Predict customer churn risk using ML models.
+3. **Persona Building** - Segment customers into distinct personas.
+4. **Offer Optimization** - Recommend retention offers based on risk and persona.
+5. **Customer Engagement** - Generate personalized messages and select optimal channels.
+6. **Feedback Loop** - Collect and process feedback to refine future actions.
+
+Each step is handled by a dedicated agent class, orchestrated through CrewAI's task pipeline.
+
+## Detailed File Descriptions
+
+### 1. `data_aggregation_agent.py`
+- **Purpose**: Collects and unifies customer data from multiple sources (CSV files, databases, APIs).
+- **Key Functions**:
+  - Reads raw input customer and transaction data.
+  - Cleans, normalizes, and formats data into consistent profiles.
+  - Outputs a list of customer profile dictionaries.
+- **Role**: *Data Orchestrator / Data Aggregator*
+
+### 2. `ml_model.py`
+- **Purpose**: Encapsulates the machine learning churn prediction model.
+- **Key Details**:
+  - Reads customer and transaction data CSVs.
+  - Trains a classification model (e.g., `RandomForestClassifier`) dynamically.
+  - Saves the trained model for use by the churn prediction agent.
+- **Role**: *ML Model Trainer and Provider*
+
+### 3. `churn_prediction_agent.py`
+- **Purpose**: Loads the pre-trained ML model and predicts churn probability for each customer.
+- **Key Features**:
+  - Dynamically extracts features from customer profiles.
+  - Predicts churn risk probability.
+  - Categorizes customers into high, medium, or low risk.
+- **Role**: *Churn Risk Scorer*
+
+### 4. `persona_builder_agent.py`
+- **Purpose**: Clusters customers into distinct personas based on churn risk and behavioral data.
+- **Key Features**:
+  - Uses `KMeans` clustering on dynamic feature sets.
+  - Assigns persona labels to customers for targeted marketing.
+- **Role**: *Customer Segmenter / Persona Generator*
+
+### 5. `offer_optimization_agent.py`
+- **Purpose**: Selects the best retention offer for each customer based on churn risk and persona.
+- **Key Features**:
+  - Uses churn risk categories to assign dynamic offers (e.g., discounts, bundles).
+  - Logic can be extended to use persona or other profile info.
+- **Role**: *Retention Offer Optimizer*
+
+### 6. `engagement_agent.py`
+- **Purpose**: Generates personalized communication messages and selects the optimal channel.
+- **Key Features**:
+  - Crafts tailored messages based on customer details.
+  - Chooses channels dynamically (e.g., phone calls for high-risk, email for medium).
+- **Role**: *Customer Engagement Specialist / Copywriter*
+
+### 7. `feedback_loop_agent.py`
+- **Purpose**: Collects and processes feedback from customer engagement efforts.
+- **Key Features**:
+  - Simulates or consumes real feedback on campaign success.
+  - Updates customer profiles with feedback annotations.
+- **Role**: *Campaign Performance Analyst*
+
+### 8. `build_tasks.py`
+- **Purpose**: Defines the CrewAI task pipeline linking all agents sequentially.
+- **Key Details**:
+  - Specifies execution order.
+  - Declares expected outputs and input keys.
+  - Sets parallelism or sequential execution flags.
+
+### 9. `main.py`
+- **Purpose**: Entry point to run the full pipeline.
+- **Key Details**:
+  - Instantiates agents with appropriate LLM or dependencies.
+  - Loads input files (customer data, offers, etc.).
+  - Constructs the pipeline using `build_tasks.py`.
+  - Triggers execution and displays final results.
+
+## Output Description
+The final output is an annotated customer profile list, enriched with:
+- `churn_score`: Probability (0-1) indicating churn risk.
+- `churn_risk`: Categorized risk level (high, medium, low).
+- `persona`: Cluster assignment for segmentation.
+- `offer`: Recommended retention offer.
+- `message` & `channel`: Personalized communication details.
+- `feedback`: Engagement feedback for optimization.
+
+## Benefits for Stakeholders
+- **Proactive Churn Reduction**: Identify high-risk customers early.
+- **Personalized Campaigns**: Tailor offers and messages based on risk and persona.
+- **Efficient Resource Allocation**: Focus marketing efforts on high-impact segments.
+- **Continuous Improvement**: Learn from feedback to refine future campaigns.
+
+## Summary
+**Goal**: Reduce customer churn and increase retention via AI-driven automation.  
+**Approach**: Modular, reusable agents handle discrete tasks from data to feedback.  
+**Result**: Significant reduction in churn risk, improved engagement, and optimized marketing spend.
+
 
 ## Installation & Usage
 
