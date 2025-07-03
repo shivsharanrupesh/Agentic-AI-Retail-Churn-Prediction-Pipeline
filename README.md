@@ -272,6 +272,52 @@ The final output is an annotated customer profile list, enriched with:
 | **Pipeline Performance**| Latency, throughput, error rate          | Logging, monitoring (Prometheus, ELK) |
 
 
+
+
+## Use of LLM in This Project
+
+### 1. Agent Communication & Orchestration
+The project uses an **agentic AI architecture** where specialized agents collaborate. The LLM serves as the core intelligence for:
+
+- **Dynamic Interpretation**: Understanding inputs/context across agents  
+- **Reasoned Outputs**: Generating churn explanations, persona descriptions, etc.  
+- **Agent Coordination**: Facilitating natural language communication between agents  
+- **Task Delegation**: Structuring clear instructions for workflow handoffs  
+- **Goal Alignment**: Incorporating business constraints via prompt engineering  
+
+### 2. Generating Explanations & Insights
+LLMs transform raw data into actionable narratives:
+- **Churn Analysis**: _"Customer X shows high risk due to 60% reduced engagement over 3 months"_  
+- **Persona Summaries**: _"Budget-Conscious Families: Prefers value bundles, responds to email offers"_  
+- **Offer Rationales**: _"15% discount recommended for high-risk customers who previously responded to similar promotions"_  
+
+### 3. Personalized Engagement Content
+The Engagement Agent uses LLMs to create:
+- **Tailored Messages**:  
+  ```text
+  "Hi [Name], we miss you! As a valued customer, enjoy an exclusive 20% discount 
+  on your next purchase - valid until [date]."  
+  
+### 4. Handling Complex Reasoning
+LLMs enable advanced decision-making by:
+- **Multi-factor Analysis**: Combining churn scores, persona clusters, and interaction history
+- **Dynamic Rule Evaluation**: Adapting to edge cases beyond static business rules
+- **Cost-Benefit Assessment**: Balancing offer costs against predicted retention impact
+- **Contextual Adaptation**: Adjusting recommendations based on real-time feedback
+
+### 5. Human-like Interaction
+When integrated with interfaces, LLMs provide:
+- **Natural Language Queries**:  
+  Example: _"Show high-risk customers who declined last offer"_
+- **Automated Explanations**:  
+  _"Customer was flagged high-risk due to: 1) 45-day inactivity 2) Competitor purchases"_
+- **Executive Summaries**:  
+  Weekly retention performance reports in business-friendly language
+- **Interactive Debugging**:  
+  Answering _"Why did the system recommend this offer?"_ with technical/non-technical versions
+
+
+
 ## Installation & Usage
 
 ```bash
