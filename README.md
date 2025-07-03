@@ -336,49 +336,6 @@ customer_data.csv:
 
 Required fields: Customer ID, purchase history, interaction logs, feedback
 
-Format: CSV with header row
-
-offers.json:
-
-Structure: JSON array of available offers with parameters
-
-Example:
-
-[
-  {
-    "offer_id": "discount_10",
-    "type": "percentage_discount",
-    "value": 10,
-    "applicable_segments": ["high_risk"]
-  }
-]
-
-Output Interpretation
-The pipeline produces:
-
-Structured customer profiles with churn scores
-
-Defined customer segments
-
-Recommended retention strategies
-
-Engagement templates
-
-Performance feedback
-
-Final output appears as:
-
-Pipeline result: [Summary of optimized retention strategy]
-
-Troubleshooting
-Common issues:
-
-Data format errors: Verify CSV structure and JSON validity
-
-API connectivity: Check network access to OpenAI endpoints
-
-Permission issues: Ensure write access to output directories
-
 License
 MIT License - See LICENSE for details.
 
