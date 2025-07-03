@@ -258,11 +258,6 @@ The final output is an annotated customer profile list, enriched with:
 **Approach**: Modular, reusable agents handle discrete tasks from data to feedback.  
 **Result**: Significant reduction in churn risk, improved engagement, and optimized marketing spend.
 
-# AI-Powered Customer Churn Prediction & Retention Pipeline
-
-## Overview
-[... previous sections remain unchanged ...]
-
 ## Evaluation Parameters & Tools
 
 | Aspect                  | Metrics / Methods                          | Tools / Techniques                     |
