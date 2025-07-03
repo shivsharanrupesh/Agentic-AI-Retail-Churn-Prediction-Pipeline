@@ -258,6 +258,24 @@ The final output is an annotated customer profile list, enriched with:
 **Approach**: Modular, reusable agents handle discrete tasks from data to feedback.  
 **Result**: Significant reduction in churn risk, improved engagement, and optimized marketing spend.
 
+# AI-Powered Customer Churn Prediction & Retention Pipeline
+
+## Overview
+[... previous sections remain unchanged ...]
+
+## Evaluation Parameters & Tools
+
+| Aspect                  | Metrics / Methods                          | Tools / Techniques                     |
+|-------------------------|-------------------------------------------|----------------------------------------|
+| **Data Quality**        | Completeness, correctness, anomaly detection | Data profiling tools, custom scripts  |
+| **Model Accuracy**      | Precision, Recall, F1, ROC-AUC            | Scikit-learn, MLflow, custom tests    |
+| **Clustering Validity** | Silhouette score, Davies-Bouldin          | Scikit-learn metrics                  |
+| **Recommendation Quality** | Conversion rate, A/B test lift         | Experiment platforms, analytics       |
+| **Engagement Metrics**  | Open rate, CTR, response rate            | Email/SMS analytics, CRM platforms    |
+| **Feedback Integration**| KPI improvements after feedback          | Monitoring dashboards                 |
+| **Business Impact**     | Churn reduction %, revenue uplift, cost savings | BI tools (Tableau, Power BI)       |
+| **Pipeline Performance**| Latency, throughput, error rate          | Logging, monitoring (Prometheus, ELK) |
+
 
 ## Installation & Usage
 
